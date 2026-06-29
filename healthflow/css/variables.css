@@ -1,0 +1,110 @@
+/* ===================== 디자인 토큰 (CSS 커스텀 속성) ===================== */
+:root {
+  /* 컬러 - Primary */
+  --color-primary: #0D9488;
+  --color-primary-light: #14B8A6;
+  --color-primary-dark: #0F766E;
+  --color-primary-bg: #E6FFFA;
+
+  /* 컬러 - Background */
+  --color-bg: #F8FAFB;
+  --color-surface: #FFFFFF;
+  --color-card: #FFFFFF;
+
+  /* 컬러 - Text */
+  --color-text: #1A1A2E;
+  --color-text-sub: #6B7280;
+  --color-text-faint: #9CA3AF;
+  --color-text-on-primary: #FFFFFF;
+
+  /* 컬러 - Accent */
+  --color-accent: #F59E0B;
+  --color-accent-light: #FCD34D;
+
+  /* 시맨틱 컬러 */
+  --color-success: #10B981;
+  --color-danger: #EF4444;
+  --color-info: #3B82F6;
+  --color-purple: #8B5CF6;
+
+  /* 캘린더 컬러 코딩 */
+  --color-exercise: #3B82F6;
+  --color-meal: #10B981;
+  --color-rest: #8B5CF6;
+
+  /* 테두리/구분선 */
+  --color-border: #E5E7EB;
+  --color-divider: #F1F3F5;
+
+  /* 그림자 */
+  --shadow-sm: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(16, 24, 40, 0.08), 0 2px 4px -2px rgba(16, 24, 40, 0.04);
+  --shadow-lg: 0 12px 24px -4px rgba(16, 24, 40, 0.10), 0 4px 8px -2px rgba(16, 24, 40, 0.04);
+
+  /* 폰트 */
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo',
+    'Noto Sans KR', 'Malgun Gothic', sans-serif;
+
+  --font-size-title: 28px;
+  --font-size-title-sm: 24px;
+  --font-size-subtitle: 20px;
+  --font-size-subtitle-sm: 18px;
+  --font-size-body: 16px;
+  --font-size-body-sm: 14px;
+  --font-size-caption: 12px;
+
+  /* 라운드 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* 간격 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* 사이즈 */
+  --height-input: 44px;
+  --height-btn: 48px;
+  --height-header: 60px;
+  --height-bottomnav: 64px;
+  --width-sidebar: 240px;
+
+  /* 트랜지션 */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.4s ease;
+
+  /* z-index */
+  --z-header: 100;
+  --z-bottomnav: 100;
+  --z-sidebar: 90;
+  --z-modal: 1000;
+  --z-toast: 1100;
+}
+
+/* ===================== 다크모드 ===================== */
+[data-theme="dark"] {
+  --color-bg: #111827;
+  --color-surface: #1F2937;
+  --color-card: #1F2937;
+
+  --color-text: #F3F4F6;
+  --color-text-sub: #9CA3AF;
+  --color-text-faint: #6B7280;
+
+  --color-border: #374151;
+  --color-divider: #2D3748;
+
+  --color-primary-bg: rgba(13, 148, 136, 0.16);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.5), 0 4px 8px -2px rgba(0, 0, 0, 0.3);
+}

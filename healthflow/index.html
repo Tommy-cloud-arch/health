@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0D9488">
+<title>HealthFlow - 나만의 건강관리 플래너</title>
+<meta name="description" content="개인 맞춤 운동/식단/캘린더 건강관리 웹앱 HealthFlow">
+
+<!-- CSS 로드 순서: reset → variables → layout → components → pages → charts → dark-mode -->
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/charts.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/dark-mode.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== 상단 헤더 ===================== -->
+  <header class="app-header">
+    <div class="app-header__logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <span>HealthFlow</span>
+    </div>
+    <div class="app-header__actions">
+      <!-- 다크모드 토글 -->
+      <button type="button" class="icon-btn" id="btn-theme-toggle" aria-label="다크모드 전환">
+        <svg id="icon-theme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <!-- 설정(리셋) -->
+      <button type="button" class="icon-btn" id="btn-settings" aria-label="설정 및 초기화">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== 데스크탑 사이드바 ===================== -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <span>HealthFlow</span>
+    </div>
+    <nav class="sidebar__nav">
+      <a href="#dashboard" class="sidebar__item" data-nav="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        <span>대시보드</span>
+      </a>
+      <a href="#exercise" class="sidebar__item" data-nav="exercise">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11"/><path d="M21 21l-1-1M4 4l-1-1"/><path d="M18.5 9.5l1.5-1.5a2.12 2.12 0 0 0-3-3L15.5 6.5"/><path d="M3 18.5l1.5-1.5"/><path d="M5.5 14.5l1.5-1.5a2.12 2.12 0 0 1 3 3l-1.5 1.5"/><path d="M8.5 17.5l1-1"/></svg>
+        <span>운동</span>
+      </a>
+      <a href="#diet" class="sidebar__item" data-nav="diet">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+        <span>식단</span>
+      </a>
+      <a href="#calendar" class="sidebar__item" data-nav="calendar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>캘린더</span>
+      </a>
+      <a href="#tracker" class="sidebar__item" data-nav="tracker">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>추적</span>
+      </a>
+    </nav>
+    <div class="sidebar__footer">
+      &copy; 2026 HealthFlow<br>
+      일반 건강관리 보조 도구
+    </div>
+  </aside>
+
+  <!-- ===================== 메인 영역 ===================== -->
+  <main class="app-main">
+
+    <!-- ============ 1. 온보딩 페이지 ============ -->
+    <section class="page" data-page="onboarding" id="page-onboarding">
+
+      <!-- 환영 화면 -->
+      <div class="onboarding-welcome" id="onboarding-welcome">
+        <div class="onboarding-welcome__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <h1 class="onboarding-welcome__title">HealthFlow와 함께<br>건강한 습관을 시작해보세요</h1>
+        <p class="onboarding-welcome__desc">몇 가지 정보를 알려주시면<br>나만의 운동·식단·생활 플랜을 만들어드려요.</p>
+        <button type="button" class="btn btn--primary btn--lg btn--block" id="btn-start-onboarding">시작하기</button>
+      </div>
+
+      <!-- 스텝 폼 영역 -->
+      <div class="onboarding-form" id="onboarding-form" hidden>
+
+        <!-- 스텝퍼 -->
+        <div class="stepper" id="stepper">
+          <div class="stepper__step active" data-step="1">
+            <div class="stepper__circle">1</div>
+            <span class="stepper__label">기본정보</span>
+          </div>
+          <div class="stepper__line"></div>
+          <div class="stepper__step" data-step="2">
+            <div class="stepper__circle">2</div>
+            <span class="stepper__label">건강목표</span>
+          </div>
+          <div class="stepper__line"></div>
+          <div class="stepper__step" data-step="3">
+            <div class="stepper__circle">3</div>
+            <span class="stepper__label">건강상태</span>
+          </div>
+          <div class="stepper__line"></div>
+          <div class="stepper__step" data-step="4">
+            <div class="stepper__circle">4</div>
+            <span class="stepper__label">생활스케줄</span>
+          </div>
+          <div class="stepper__line"></div>
+          <div class="stepper__step" data-step="5">
+            <div class="stepper__circle">5</div>
+            <span class="stepper__label">식습관</span>
+          </div>
+          <div class="stepper__line"></div>
+          <div class="stepper__step" data-step="6">
+            <div class="stepper__circle">6</div>
+            <span class="stepper__label">운동습관</span>
+          </div>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-bar__fill" id="onboarding-progress" style="width: 16.6%;"></div>
+        </div>
+
+        <form id="onboarding-form-el" novalidate>
+
+          <!-- ---- Step 1: 기본정보 ---- -->
+          <div class="onboarding-step active" data-step-panel="1">
+            <div class="page-header">
+              <h2 class="page-header__title">기본 정보를 알려주세요</h2>
+              <p class="page-header__subtitle">정확한 플랜 계산을 위해 사용됩니다.</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-age">나이 <span class="form-required">*</span></label>
+              <input type="number" id="input-age" class="form-input" name="age" min="1" max="120" placeholder="예: 32" required>
+              <p class="form-error" id="error-age"></p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-gender">성별 <span class="form-required">*</span></label>
+              <select id="input-gender" class="form-select" name="gender" required>
+                <option value="">선택하세요</option>
+                <option value="male">남성</option>
+                <option value="female">여성</option>
+              </select>
+              <p class="form-error" id="error-gender"></p>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="input-height">키 (cm) <span class="form-required">*</span></label>
+                <input type="number" id="input-height" class="form-input" name="height" min="100" max="250" placeholder="예: 170" required>
+                <p class="form-error" id="error-height"></p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-weight">몸무게 (kg) <span class="form-required">*</span></label>
+                <input type="number" id="input-weight" class="form-input" name="weight" min="20" max="300" placeholder="예: 65" required>
+                <p class="form-error" id="error-weight"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---- Step 2: 건강목표 ---- -->
+          <div class="onboarding-step" data-step-panel="2">
+            <div class="page-header">
+              <h2 class="page-header__title">어떤 건강 목표를 가지고 있나요?</h2>
+              <p class="page-header__subtitle">중복 선택이 가능합니다.</p>
+            </div>
+
+            <div class="goal-card-grid" id="goal-card-grid">
+              <button type="button" class="goal-card" data-goal="체중감량">
+                <span class="goal-card__icon">🔥</span>
+                <span class="goal-card__label">체중감량</span>
+              </button>
+              <button type="button" class="goal-card" data-goal="근육증가">
+                <span class="goal-card__icon">💪</span>
+                <span class="goal-card__label">근육증가</span>
+              </button>
+              <button type="button" class="goal-card" data-goal="체력향상">
+                <span class="goal-card__icon">⚡</span>
+                <span class="goal-card__label">체력향상</span>
+              </button>
+              <button type="button" class="goal-card" data-goal="질환관리">
+                <span class="goal-card__icon">🩺</span>
+                <span class="goal-card__label">질환관리</span>
+              </button>
+              <button type="button" class="goal-card" data-goal="컨디션유지">
+                <span class="goal-card__icon">🌿</span>
+                <span class="goal-card__label">컨디션유지</span>
+              </button>
+            </div>
+            <p class="form-error" id="error-goals"></p>
+          </div>
+
+          <!-- ---- Step 3: 건강상태 ---- -->
+          <div class="onboarding-step" data-step-panel="3">
+            <div class="page-header">
+              <h2 class="page-header__title">현재 건강 상태를 알려주세요</h2>
+              <p class="page-header__subtitle">안전한 플랜을 위해 꼭 확인해주세요.</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-condition-tag">기저질환 (있다면 입력 후 Enter)</label>
+              <div class="tag-input" id="tag-input-conditions">
+                <div class="tag-input__tags" id="tags-conditions"></div>
+                <input type="text" id="input-condition-tag" class="tag-input__field" placeholder="예: 고혈압, 당뇨">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-medications">복용약</label>
+              <input type="text" id="input-medications" class="form-input" name="medications" placeholder="복용 중인 약을 입력하세요">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-allergy-tag">알레르기 (있다면 입력 후 Enter)</label>
+              <div class="tag-input" id="tag-input-allergies">
+                <div class="tag-input__tags" id="tags-allergies"></div>
+                <input type="text" id="input-allergy-tag" class="tag-input__field" placeholder="예: 갑각류, 땅콩">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-injuries">부상 이력</label>
+              <textarea id="input-injuries" class="form-textarea" name="injuries" placeholder="예: 무릎 부상, 허리디스크 등" rows="3"></textarea>
+            </div>
+          </div>
+
+          <!-- ---- Step 4: 생활스케줄 ---- -->
+          <div class="onboarding-step" data-step-panel="4">
+            <div class="page-header">
+              <h2 class="page-header__title">평소 생활 스케줄은 어떻게 되나요?</h2>
+              <p class="page-header__subtitle">운동/식사 시간을 자동으로 배치해드려요.</p>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="input-wakeup">기상시간</label>
+                <input type="time" id="input-wakeup" class="form-input" name="wakeUp" value="07:00">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-sleep">취침시간</label>
+                <input type="time" id="input-sleep" class="form-input" name="sleep" value="23:00">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-workpattern">근무패턴</label>
+              <select id="input-workpattern" class="form-select" name="workPattern">
+                <option value="주간근무">주간근무</option>
+                <option value="야간근무">야간근무</option>
+                <option value="교대근무">교대근무</option>
+                <option value="재택근무">재택근무</option>
+                <option value="무직/은퇴">무직 / 은퇴</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">운동 가능 시간대 (복수 선택 가능)</label>
+              <div class="chip-group" id="chip-group-times">
+                <button type="button" class="chip" data-chip="아침">아침</button>
+                <button type="button" class="chip" data-chip="오전">오전</button>
+                <button type="button" class="chip" data-chip="점심">점심</button>
+                <button type="button" class="chip" data-chip="오후">오후</button>
+                <button type="button" class="chip" data-chip="저녁">저녁</button>
+                <button type="button" class="chip" data-chip="밤">밤</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---- Step 5: 식습관 ---- -->
+          <div class="onboarding-step" data-step-panel="5">
+            <div class="page-header">
+              <h2 class="page-header__title">식습관을 알려주세요</h2>
+              <p class="page-header__subtitle">맞춤 식단 플랜에 반영됩니다.</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-mealpattern">식사패턴</label>
+              <select id="input-mealpattern" class="form-select" name="mealPattern">
+                <option value="3끼">하루 3끼</option>
+                <option value="2끼">하루 2끼</option>
+                <option value="간헐적단식">간헐적 단식</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-preferred-food">선호 음식</label>
+              <input type="text" id="input-preferred-food" class="form-input" name="preferred" placeholder="예: 한식, 샐러드">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-avoided-food">기피 음식</label>
+              <input type="text" id="input-avoided-food" class="form-input" name="avoided" placeholder="예: 매운 음식, 해산물">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">식이 제한 (복수 선택 가능)</label>
+              <div class="checkbox-group" id="checkbox-group-restrictions">
+                <label class="checkbox-card">
+                  <input type="checkbox" value="채식" name="restrictions">
+                  <span>채식</span>
+                </label>
+                <label class="checkbox-card">
+                  <input type="checkbox" value="비건" name="restrictions">
+                  <span>비건</span>
+                </label>
+                <label class="checkbox-card">
+                  <input type="checkbox" value="할랄" name="restrictions">
+                  <span>할랄</span>
+                </label>
+                <label class="checkbox-card">
+                  <input type="checkbox" value="저탄수" name="restrictions">
+                  <span>저탄수</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---- Step 6: 운동습관 ---- -->
+          <div class="onboarding-step" data-step-panel="6">
+            <div class="page-header">
+              <h2 class="page-header__title">운동 습관을 알려주세요</h2>
+              <p class="page-header__subtitle">마지막 단계예요!</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="input-current-level">현재 운동량</label>
+              <select id="input-current-level" class="form-select" name="currentLevel">
+                <option value="초급">초급 (거의 안 함)</option>
+                <option value="중급">중급 (주 1~2회)</option>
+                <option value="고급">고급 (주 3회 이상)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">선호 운동 (복수 선택 가능)</label>
+              <div class="chip-group" id="chip-group-exercises">
+                <button type="button" class="chip" data-chip="걷기">걷기</button>
+                <button type="button" class="chip" data-chip="유산소">유산소</button>
+                <button type="button" class="chip" data-chip="근력">근력운동</button>
+                <button type="button" class="chip" data-chip="요가">요가</button>
+                <button type="button" class="chip" data-chip="필라테스">필라테스</button>
+                <button type="button" class="chip" data-chip="수영">수영</button>
+                <button type="button" class="chip" data-chip="스트레칭">스트레칭</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">운동 환경</label>
+              <div class="env-card-grid" id="env-card-grid">
+                <button type="button" class="env-card" data-env="홈">
+                  <span class="env-card__icon">🏠</span>
+                  <span>홈트레이닝</span>
+                </button>
+                <button type="button" class="env-card" data-env="헬스장">
+                  <span class="env-card__icon">🏋️</span>
+                  <span>헬스장</span>
+                </button>
+                <button type="button" class="env-card" data-env="야외">
+                  <span class="env-card__icon">🌳</span>
+                  <span>야외</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+        <!-- 이전/다음/플랜생성 버튼 -->
+        <div class="onboarding-actions">
+          <button type="button" class="btn btn--outline" id="btn-prev-step" disabled>이전</button>
+          <button type="button" class="btn btn--primary" id="btn-next-step">다음</button>
+          <button type="button" class="btn btn--primary" id="btn-generate-plan" hidden>플랜 생성</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 2. 대시보드 ============ -->
+    <section class="page" data-page="dashboard" id="page-dashboard" hidden>
+      <div class="page-header">
+        <h1 class="page-header__title">대시보드</h1>
+        <p class="page-header__subtitle">오늘의 건강 현황을 한눈에 확인하세요.</p>
+      </div>
+
+      <div id="dashboard-content">
+        <div class="dashboard-grid">
+          <!-- BMI 카드 -->
+          <div class="card">
+            <div class="card__header"><h3>BMI 지수</h3></div>
+            <div class="card__body chart-card-body">
+              <div id="bmi-chart" class="chart-container"></div>
+              <p class="chart-caption" id="bmi-caption">-</p>
+            </div>
+          </div>
+
+          <!-- 건강 목표 카드 -->
+          <div class="card">
+            <div class="card__header"><h3>나의 건강 목표</h3></div>
+            <div class="card__body">
+              <div class="tag-display" id="goals-display"></div>
+            </div>
+          </div>
+
+          <!-- 추천 칼로리 카드 -->
+          <div class="card card--span2">
+            <div class="card__header"><h3>일일 추천 칼로리 &amp; 매크로</h3></div>
+            <div class="card__body chart-card-body">
+              <div class="calorie-display" id="calorie-display">
+                <span class="calorie-display__num">-</span>
+                <span class="calorie-display__unit">kcal / 일</span>
+              </div>
+              <div id="macro-chart" class="chart-container"></div>
+            </div>
+          </div>
+
+          <!-- 위험요인 요약 카드 -->
+          <div class="card card--span2">
+            <div class="card__header"><h3>위험요인 &amp; 추천사항</h3></div>
+            <div class="card__body">
+              <ul class="risk-list" id="risk-list"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 빈 상태 -->
+        <div class="empty-state" id="dashboard-empty" hidden>
+          <div class="empty-state__icon">📊</div>
+          <p class="empty-state__text">아직 데이터가 없습니다</p>
+          <button class="btn btn--primary" id="btn-empty-dashboard">프로필 작성하기</button>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>본 서비스는 일반 건강관리 및 생활습관 코칭 목적이며, 의료 진단/처방/치료를 대체하지 않습니다. 응급 증상 시 즉시 의료기관 또는 119를 이용하세요.</span>
+      </div>
+    </section>
+
+    <!-- ============ 3. 운동 플랜 ============ -->
+    <section class="page" data-page="exercise" id="page-exercise" hidden>
+      <div class="page-header">
+        <h1 class="page-header__title">운동 플랜</h1>
+        <p class="page-header__subtitle">요일별 맞춤 운동을 확인하세요.</p>
+      </div>
+
+      <div id="exercise-content">
+        <div class="tabs" id="exercise-day-tabs">
+          <button class="tab-btn" data-day="월">월</button>
+          <button class="tab-btn" data-day="화">화</button>
+          <button class="tab-btn" data-day="수">수</button>
+          <button class="tab-btn" data-day="목">목</button>
+          <button class="tab-btn" data-day="금">금</button>
+          <button class="tab-btn" data-day="토">토</button>
+          <button class="tab-btn" data-day="일">일</button>
+        </div>
+
+        <div class="exercise-day-summary" id="exercise-day-summary"></div>
+
+        <div class="exercise-card-list" id="exercise-card-list"></div>
+
+        <div class="card">
+          <div class="card__header"><h3>4주 진행 계획</h3></div>
+          <div class="card__body">
+            <div class="progression-list" id="progression-list"></div>
+          </div>
+        </div>
+
+        <!-- 빈 상태 -->
+        <div class="empty-state" id="exercise-empty" hidden>
+          <div class="empty-state__icon">🏃</div>
+          <p class="empty-state__text">아직 데이터가 없습니다</p>
+          <button class="btn btn--primary" id="btn-empty-exercise">프로필 작성하기</button>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>본 서비스는 일반 건강관리 및 생활습관 코칭 목적이며, 의료 진단/처방/치료를 대체하지 않습니다. 응급 증상 시 즉시 의료기관 또는 119를 이용하세요.</span>
+      </div>
+    </section>
+
+    <!-- ============ 4. 식단 플랜 ============ -->
+    <section class="page" data-page="diet" id="page-diet" hidden>
+      <div class="page-header">
+        <h1 class="page-header__title">식단 플랜</h1>
+        <p class="page-header__subtitle">요일별 맞춤 식단을 확인하세요.</p>
+      </div>
+
+      <div id="diet-content">
+        <div class="tabs" id="diet-day-tabs">
+          <button class="tab-btn" data-day="월">월</button>
+          <button class="tab-btn" data-day="화">화</button>
+          <button class="tab-btn" data-day="수">수</button>
+          <button class="tab-btn" data-day="목">목</button>
+          <button class="tab-btn" data-day="금">금</button>
+          <button class="tab-btn" data-day="토">토</button>
+          <button class="tab-btn" data-day="일">일</button>
+        </div>
+
+        <div class="diet-calorie-total" id="diet-calorie-total"></div>
+
+        <div class="diet-grid">
+          <div class="meal-card-list" id="meal-card-list"></div>
+          <div class="card">
+            <div class="card__header"><h3>매크로 비율</h3></div>
+            <div class="card__body chart-card-body">
+              <div id="diet-macro-chart" class="chart-container"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 쇼핑 리스트 -->
+        <div class="collapsible" id="shopping-list-collapsible">
+          <button type="button" class="collapsible__header" id="shopping-list-toggle">
+            <span>주간 쇼핑 리스트</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="collapsible__chevron"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="collapsible__body">
+            <ul class="shopping-list" id="shopping-list"></ul>
+          </div>
+        </div>
+
+        <!-- 빈 상태 -->
+        <div class="empty-state" id="diet-empty" hidden>
+          <div class="empty-state__icon">🥗</div>
+          <p class="empty-state__text">아직 데이터가 없습니다</p>
+          <button class="btn btn--primary" id="btn-empty-diet">프로필 작성하기</button>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>본 서비스는 일반 건강관리 및 생활습관 코칭 목적이며, 의료 진단/처방/치료를 대체하지 않습니다. 응급 증상 시 즉시 의료기관 또는 119를 이용하세요.</span>
+      </div>
+    </section>
+
+    <!-- ============ 5. 통합 주간 캘린더 ============ -->
+    <section class="page" data-page="calendar" id="page-calendar" hidden>
+      <div class="page-header">
+        <h1 class="page-header__title">통합 주간 캘린더</h1>
+        <p class="page-header__subtitle">운동, 식사, 휴식 일정을 한눈에 확인하세요.</p>
+      </div>
+
+      <div id="calendar-content">
+        <div class="calendar-legend">
+          <span class="calendar-legend__item"><span class="calendar-legend__dot calendar-legend__dot--exercise"></span>운동</span>
+          <span class="calendar-legend__item"><span class="calendar-legend__dot calendar-legend__dot--meal"></span>식사</span>
+          <span class="calendar-legend__item"><span class="calendar-legend__dot calendar-legend__dot--rest"></span>휴식</span>
+        </div>
+
+        <div class="calendar-grid" id="calendar-grid"></div>
+
+        <!-- 빈 상태 -->
+        <div class="empty-state" id="calendar-empty" hidden>
+          <div class="empty-state__icon">🗓️</div>
+          <p class="empty-state__text">아직 데이터가 없습니다</p>
+          <button class="btn btn--primary" id="btn-empty-calendar">프로필 작성하기</button>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>본 서비스는 일반 건강관리 및 생활습관 코칭 목적이며, 의료 진단/처방/치료를 대체하지 않습니다. 응급 증상 시 즉시 의료기관 또는 119를 이용하세요.</span>
+      </div>
+    </section>
+
+    <!-- ============ 6. 진행 추적 ============ -->
+    <section class="page" data-page="tracker" id="page-tracker" hidden>
+      <div class="page-header">
+        <h1 class="page-header__title">진행 추적</h1>
+        <p class="page-header__subtitle">매일의 기록을 남기고 변화를 확인하세요.</p>
+      </div>
+
+      <div class="tracker-grid">
+        <!-- 기록 입력 폼 -->
+        <div class="card">
+          <div class="card__header"><h3>오늘의 기록</h3></div>
+          <div class="card__body">
+            <form id="tracker-form">
+              <div class="form-group">
+                <label class="form-label" for="tracker-date">날짜</label>
+                <input type="date" id="tracker-date" class="form-input" name="date" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="tracker-weight">체중 (kg)</label>
+                <input type="number" id="tracker-weight" class="form-input" name="weight" step="0.1" placeholder="예: 64.5">
+              </div>
+              <div class="form-group">
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="tracker-exercise-done" name="exerciseDone">
+                  <span>오늘 운동을 수행했어요</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="form-label">체감 컨디션</label>
+                <div class="star-rating" id="tracker-star-rating" data-value="0">
+                  <span class="star-rating__star" data-star="1">★</span>
+                  <span class="star-rating__star" data-star="2">★</span>
+                  <span class="star-rating__star" data-star="3">★</span>
+                  <span class="star-rating__star" data-star="4">★</span>
+                  <span class="star-rating__star" data-star="5">★</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="tracker-notes">메모</label>
+                <textarea id="tracker-notes" class="form-textarea" name="notes" rows="3" placeholder="오늘 느낀 점을 적어보세요"></textarea>
+              </div>
+              <button type="submit" class="btn btn--primary btn--block">기록 저장</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- 차트 영역 -->
+        <div class="tracker-charts">
+          <div class="card">
+            <div class="card__header"><h3>체중 변화</h3></div>
+            <div class="card__body chart-card-body">
+              <div id="weight-chart" class="chart-container chart-container--wide"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card__header"><h3>이번 주 달성률</h3></div>
+            <div class="card__body chart-card-body">
+              <div id="achievement-chart" class="chart-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 기록 목록 -->
+      <div class="card">
+        <div class="card__header"><h3>기록 목록</h3></div>
+        <div class="card__body">
+          <ul class="progress-log-list" id="progress-log-list"></ul>
+          <!-- 빈 상태 -->
+          <div class="empty-state" id="tracker-empty" hidden>
+            <div class="empty-state__icon">📈</div>
+            <p class="empty-state__text">아직 데이터가 없습니다</p>
+            <button class="btn btn--primary" id="btn-empty-tracker">프로필 작성하기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== 하단 네비게이션 (모바일) ===================== -->
+  <nav class="bottom-nav">
+    <a href="#dashboard" class="bottom-nav__item" data-nav="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      <span>대시보드</span>
+    </a>
+    <a href="#exercise" class="bottom-nav__item" data-nav="exercise">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11"/><path d="M18.5 9.5l1.5-1.5a2.12 2.12 0 0 0-3-3L15.5 6.5"/><path d="M5.5 14.5l1.5-1.5a2.12 2.12 0 0 1 3 3l-1.5 1.5"/></svg>
+      <span>운동</span>
+    </a>
+    <a href="#diet" class="bottom-nav__item" data-nav="diet">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+      <span>식단</span>
+    </a>
+    <a href="#calendar" class="bottom-nav__item" data-nav="calendar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>캘린더</span>
+    </a>
+    <a href="#tracker" class="bottom-nav__item" data-nav="tracker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>추적</span>
+    </a>
+  </nav>
+
+  <!-- ===================== 설정/리셋 모달 ===================== -->
+  <div class="modal" id="reset-modal">
+    <div class="modal__overlay" id="reset-modal-overlay"></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3>데이터 초기화</h3>
+        <button type="button" class="icon-btn" id="reset-modal-close" aria-label="닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <p>프로필, 플랜, 진행 기록 등 모든 데이터가 영구적으로 삭제됩니다. 계속하시겠습니까?</p>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--outline" id="reset-cancel-btn">취소</button>
+        <button type="button" class="btn btn--danger" id="reset-confirm-btn">전체 삭제</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== 토스트 컨테이너 ===================== -->
+  <div class="toast-container" id="toast-container"></div>
+
+</div>
+
+<!-- JS 로드 순서: storage → planner → charts → app (모두 defer) -->
+<script src="js/storage.js" defer></script>
+<script src="js/planner.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/app.js" defer></script>
+</body>
+</html>
