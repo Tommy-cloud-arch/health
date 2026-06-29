@@ -1,0 +1,99 @@
+/* ===================== 반응형 미디어 쿼리 (mobile-first) ===================== */
+
+/* 작은 모바일 보정 */
+@media (max-width: 360px) {
+  .option-grid { grid-template-columns: 1fr 1fr; }
+  .summary-row,
+  .diet-summary-row,
+  .tracker-summary-row { grid-template-columns: 1fr; }
+}
+
+/* 태블릿 이상 */
+@media (min-width: 600px) {
+  .input-row { grid-template-columns: repeat(2, 1fr); }
+  .shopping-list { grid-template-columns: repeat(3, 1fr); }
+  .four-week-track { gap: var(--space-4); }
+}
+
+/* 데스크탑: 사이드바 전환 */
+@media (min-width: 1024px) {
+  .app-header {
+    left: var(--width-sidebar);
+  }
+
+  .sidebar {
+    display: flex;
+  }
+
+  .app-main {
+    margin-left: var(--width-sidebar);
+    padding-bottom: var(--space-8);
+  }
+
+  .bottom-nav {
+    display: none;
+  }
+
+  .page {
+    padding: var(--space-8) var(--space-8);
+    max-width: 1140px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: start;
+  }
+
+  .dashboard-grid > .full-span {
+    grid-column: 1 / -1;
+  }
+
+  .summary-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .option-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .onboarding-page {
+    max-width: 640px;
+    padding-top: var(--space-8);
+  }
+
+  .week-grid {
+    gap: var(--space-3);
+  }
+
+  .cal-block {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .modal-overlay {
+    align-items: center;
+  }
+
+  .modal {
+    border-radius: var(--radius-lg);
+    max-height: 80vh;
+  }
+
+  .diet-summary-row,
+  .tracker-summary-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .page {
+    max-width: 1200px;
+  }
+
+  .exercise-list-grid,
+  .meal-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+}
